@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -38,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
-    'taggit'
+    'taggit',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'django.contrib.postgres',
+
 ]
 
 MIDDLEWARE = [
@@ -75,10 +80,15 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+load_dotenv()
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blog',
+        'USER': 'blog',
+        'PASSWORD': str(os.getenv('DATABASE_PASSWORD')),
+        'HOST': 'localhost'
     }
 }
 
@@ -122,7 +132,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #E-mail
-load_dotenv()
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER=str(os.getenv('EMAIL_USER'))
 EMAIL_HOST_PASSWORD=str(os.getenv('EMAIL_PASSWORD'))
